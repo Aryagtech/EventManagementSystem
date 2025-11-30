@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.app.demo.UserExcelExporter;
 import com.app.demo.model.Booking;
 import com.app.demo.model.Catering;
 import com.app.demo.model.Event;
@@ -596,23 +595,6 @@ public class AdminController {
 		
 		}
 		
-		
-		 @GetMapping("/downloadExcel")
-		    public void exportToExcel(HttpServletResponse response) throws IOException {
-		        response.setContentType("application/octet-stream");
-		        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-		        String currentDateTime = dateFormatter.format(new Date());
-		         
-		        String headerKey = "Content-Disposition";
-		        String headerValue = "attachment; filename=BookingDetails_" + currentDateTime + ".xlsx";
-		        response.setHeader(headerKey, headerValue);
-		         
-		        List<Booking> bookings =bookingservice.findAllandSortBy();
-		         
-		      		        UserExcelExporter excelExporter = new UserExcelExporter(bookings);
-		         
-		        excelExporter.export(response);    
-		    }  
 		 
 		 
 		 @RequestMapping(value="/adminlogout",method=RequestMethod.GET)

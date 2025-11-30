@@ -44,7 +44,6 @@ import com.app.demo.services.BookingServices;
 import com.app.demo.services.CateringServices;
 import com.app.demo.services.EventServices;
 import com.app.demo.services.HotelServices;
-import com.app.demo.services.TwillioService;
 import com.app.demo.services.UserServices;
 import com.app.demo.services.VendorServices;
 import com.lowagie.text.DocumentException;
@@ -77,43 +76,6 @@ public class UserController {
 	@Autowired
 	private JavaMailSender mailSender;
 	
-	@Autowired
-	TwillioService twillioService;
-	
-	
-	@Value("${app.twillio.fromPhoneNo}")
-	private String from;
-	
-	@Value("${app.twillio.toPhoneNo}")
-	private String to;
-
-	     	
-	@RequestMapping(value="/registerForm",method= RequestMethod.POST)
-	public String UserRegister(@ModelAttribute("registerForm") User user,Model model)
-	{
-
-			model.addAttribute("user",user);
-			String Fullname=user.getFirstName()+" "+user.getLastName();
-			this.to="+91"+user.getContactno();
-			String email=user.getEmail();
-			String password=user.getPassword();
-			User result=userservice.findByEmail(user.getEmail());
-			if(result != null) {
-				
-				model.addAttribute("reg_error","User Email Already Taken");
-				
-				return "UserRegisteration";
-			}
-			else {
-				userservice.save(user);
-				String body = "Hello "+Fullname+"\n Welcome to EXQUISITE \n Thank you for Registration!!! \n Remember your EmailId and Password \n  Emailid : "+email+" \n Password : "+password;
-				twillioService.sendSms(to, from, body);
-				
-				return "redirect:/signin";
-			}	
-				
-		
-	}
 	
 	
 	@RequestMapping(value="/login-validation",method=RequestMethod.POST)
